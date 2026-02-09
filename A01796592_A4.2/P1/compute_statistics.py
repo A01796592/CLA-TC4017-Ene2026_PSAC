@@ -89,37 +89,42 @@ class Statistics:
             if not isinstance(num, (int, float)):
                 raise ValueError("All elements must be numbers.")
 
-    def print_statistics(self):
-        """Print and save the statistical measures to a file."""
-        file_name = "StatisticsResults.txt"
-        with open(file_name, "w", encoding='utf-8') as f:
-            f.write(f"Count:\t{len(self.numbers)}\n")
-            f.write(f"Mean:\t{self.mean_calc()} \n")
-            f.write(f"Median:\t{self.median()} \n")
-            f.write(f"Mode:\t{self.mode()} \n")
-            f.write(f"Standard Deviation:\t{self.standard_deviation()} \n")
-            f.write(f"Variance:\t{self.variance()}\n")
-        print(f"Count:\t{len(self.numbers)}")
-        print(f"Mean:\t{self.mean_calc()}")
-        print(f"Median:\t{self.median()}")
-        print(f"Mode:\t{self.mode()}")
-        print(f"Standard Deviation:\t{self.standard_deviation()}")
-        print(f"Variance:\t{self.variance()}")
-
 if __name__ == "__main__":
-    time_execution = 0
     start_time = time.time()
-    filename = sys.argv[1]
-    numbers = []
-    with open(filename, 'r', encoding='utf-8') as file:
-        strname = file.read().replace(",", " ").replace("\n", " ").replace(";", " ").split()
-        for str_v in strname:
-            try:
-                numbers.append(float(str_v))
-            except ValueError:
-                print(f"Warning: '{str_v}' is not a valid number and will be skipped.")
-    stats = Statistics(numbers)
-    stats.print_statistics()
+    filenames = sys.argv[1:]
+    with open("StatisticsResults.txt", "w", encoding="utf-8") as out:
+        out.write(
+            "File\t\tCount\tMean\t\tMedian\t\tMode\tStdDev\t\tVariance\n"
+        )
+        print("File\t\tCount\tMean\t\tMedian\t\tMode\tStdDev\t\tVariance")
+        for fname in filenames:
+            numbers = []
+            with open(fname, "r", encoding="utf-8") as file:
+                content = file.read().replace(",", " ").replace("\n", " ").replace(";", " ").split()
+                for value in content:
+                    try:
+                        numbers.append(float(value))
+                    except ValueError:
+                        print(f"Warning: '{value}' in {fname} ignored")
+            stats = Statistics(numbers)
+            out.write(
+                f"{fname}\t"
+                f"{len(numbers)}\t"
+                f"{stats.mean_calc():.4f}\t"
+                f"{stats.median():.4f}\t"
+                f"{stats.mode()}\t"
+                f"{stats.standard_deviation():.4f}\t"
+                f"{stats.variance():.4f}\n"
+            )
+            print(
+                f"{fname}\t"
+                f"{len(numbers)}\t"
+                f"{stats.mean_calc():.4f}\t"
+                f"{stats.median():.4f}\t"
+                f"{stats.mode()}\t"
+                f"{stats.standard_deviation():.4f}\t"
+                f"{stats.variance():.4f}"
+            )
+    print("StatisticsResults.txt generated successfully")
     end_time = time.time()
-    time_execution = end_time - start_time
-    print(f"\nExecution time: {time_execution:.6f} seconds")
+    print(f"Execution time: {end_time - start_time:.6f} seconds")

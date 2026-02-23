@@ -64,6 +64,7 @@ class Hotel:
                 json.dump(hotel_data, f, indent=4)
         else:
             print("Hotel file does not exist.")
+        return hotel_data
 
     def reserve_room(self, customer_id, check_in_date, check_out_date):
         """Reserves a room for a customer if available."""
@@ -156,6 +157,7 @@ class Customer:
                 json.dump(customer_data, f, indent=4)
         else:
             print("Customer file does not exist.")
+        return customer_data
 
 
 class Reservation:
@@ -188,43 +190,3 @@ class Reservation:
             os.remove("reservations.json")
         else:
             print("Reservation file does not exist.")
-
-
-if __name__ == "__main__":
-    try:
-        arg = input("Enter 'Hotel' to create a hotel, "
-                    "'Customer' to create a customer, "
-                    "'Reservation' to create a reservation, "
-                    "or 'exit' to quit: ").strip().lower()
-        if arg == "hotel":
-            hotel_id_arg = input("Enter hotel ID: ")
-            hotel_name_arg = input("Enter hotel name: ")
-            location_arg = input("Enter hotel location: ")
-            rooms_arg = int(input("Enter number of rooms: "))
-            hotel_arg = Hotel(hotel_id_arg)
-            hotel_arg.create_hotel(hotel_name_arg, location_arg, rooms_arg)
-        elif arg == "customer":
-            customer_id_arg = input("Enter customer ID: ")
-            customer_name_arg = input("Enter customer name: ")
-            age_arg = input("Enter customer age (optional): ")
-            customer_arg = Customer(customer_id_arg)
-            customer_arg.create_customer(customer_name_arg,
-                                         age_arg if age_arg else None)
-        elif arg == "reservation":
-            reservation_id_arg = input("Enter reservation ID: ")
-            hotel_id_arg = input("Enter hotel ID: ")
-            customer_id_arg = input("Enter customer ID: ")
-            check_in_date_arg = input("Enter check-in date (YYYY-MM-DD): ")
-            check_out_date_arg = input("Enter check-out date (YYYY-MM-DD): ")
-            reservation_arg = Reservation(reservation_id_arg,
-                                          hotel_id_arg,
-                                          customer_id_arg)
-            reservation_arg.create_reservation(hotel_id_arg,
-                                               check_in_date_arg,
-                                               check_out_date_arg)
-        elif arg == "exit":
-            print("Exiting the system.")
-        else:
-            print("Invalid option. Please try again.")
-    except (ValueError, FileNotFoundError, json.JSONDecodeError) as e:
-        print(f"An error occurred: {e}")

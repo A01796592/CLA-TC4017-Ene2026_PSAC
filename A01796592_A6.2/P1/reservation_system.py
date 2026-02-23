@@ -80,7 +80,7 @@ class Hotel:
                 hotel_data["reservations"] = reservations
                 with open("hotels.json", "w", encoding="utf-8") as f:
                     json.dump(hotel_data, f, indent=4)
-                print(f"Room reserved successfully for customer {customer_id}.")
+                print(f"Room reserved successfully for customer {customer_id}")
             else:
                 print("No rooms available for the selected dates.")
         else:
@@ -92,7 +92,8 @@ class Hotel:
             with open("hotels.json", "r", encoding="utf-8") as f:
                 hotel_data = json.load(f)
             reservations = hotel_data.get("reservations", [])
-            reservations = [res for res in reservations if res["reservation_id"] != reservation_id]
+            reservations = [res for res in reservations
+                            if res["reservation_id"] != reservation_id]
             hotel_data["reservations"] = reservations
             with open("hotels.json", "w", encoding="utf-8") as f:
                 json.dump(hotel_data, f, indent=4)
@@ -136,7 +137,7 @@ class Customer:
             print("Customer file does not exist.")
 
     def modify_customer_information(self, name=None, age=None):
-        """Modifies the customer information and updates 
+        """Modifies the customer information and updates
         the customers.json file."""
         if os.path.exists("customers.json"):
             with open("customers.json", "r", encoding="utf-8") as f:

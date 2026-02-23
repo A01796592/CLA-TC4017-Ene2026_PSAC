@@ -14,6 +14,8 @@ class Hotel:
 
     def create_hotel(self, name, location, rooms, reservations=None):
         """Creates a hotel instance and returns it."""
+        if rooms <= 0:
+            raise ValueError("Number of rooms must be greater than 0.")
         hotel_data = {
             "hotel_id": self.hotel_id,
             "name": name,
@@ -55,6 +57,8 @@ class Hotel:
             if location:
                 hotel_data["location"] = location
             if rooms:
+                if rooms <= 0:
+                    raise ValueError("Number of rooms must be greater than 0.")
                 hotel_data["rooms"] = rooms
             with open("hotels.json", "w", encoding="utf-8") as f:
                 json.dump(hotel_data, f, indent=4)
@@ -109,6 +113,8 @@ class Customer:
 
     def create_customer(self, name, age=None):
         """Creates a customer instance and returns it."""
+        if age is not None and age <= 0:
+            raise ValueError("Age must be a positive integer.")
         customer_data = {
             "customer_id": self.customer_id,
             "name": name,
@@ -162,11 +168,13 @@ class Reservation:
     def create_reservation(self, hotel_name, check_in_date,
                            check_out_date):
         """Creates a reservation instance and returns it."""
+        if check_in_date >= check_out_date:
+            raise ValueError("Check-out date must be after check-in date.")
         reservation_data = {
             "reservation_id": self.reservation_id,
             "hotel_name": hotel_name,
-            "Hotel ID": self.hotel_id,
-            "Customer ID": self.customer_id,
+            "hotel_id": self.hotel_id,
+            "customer_id": self.customer_id,
             "check_in_date": check_in_date,
             "check_out_date": check_out_date
         }
